@@ -184,7 +184,7 @@ Deploying the frontend does **not** configure Supabase, Storage or Paymob. Do al
 2. Import the Git repository in Vercel (framework: Next.js, default build command `next build`, Node 20+).
 3. Add the environment variables (section 2) for **Production** and **Preview** separately. Use Paymob **test** keys for Preview.
 4. Set `NEXT_PUBLIC_SITE_URL` to the production domain (e.g. `https://selimlab.com`). Add the domain in Vercel → Domains.
-5. `vercel.json` schedules `/api/cron/expire-orders` every 15 minutes. It releases unpaid reservations and prunes rate-limit windows and abandoned guest carts. Vercel Hobby plans only allow daily crons: either upgrade, or change the schedule. Expired reservations are also released opportunistically at every checkout.
+5. `vercel.json` schedules `/api/cron/expire-orders` daily (03:00 UTC, the Hobby-plan limit). On Vercel Pro, change it to `*/15 * * * *` for faster release of unpaid reservations. It releases unpaid reservations and prunes rate-limit windows and abandoned guest carts. Vercel Hobby plans only allow daily crons: either upgrade, or change the schedule. Expired reservations are also released opportunistically at every checkout.
 6. Configure the Paymob callback URLs for the production domain (section 6).
 7. Create the first administrator (section 5), then enter real store settings, shipping zones and rates, products and content in the dashboard. Enable the payment methods last.
 8. Preview deployments automatically serve `robots.txt` with `Disallow: /`.
