@@ -1,26 +1,202 @@
 @import "tailwindcss";
 
+/*
+ * SELIM LAB design tokens
+ * Brand palette (exact): Warm Ivory #F8F3E9 · Champagne Gold #C9A96A · Warm Brown #4A3B2E · Deep Brown #2A2118
+ * All other tones are derived from these four.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-ivory: #f8f3e9;
+  --brand-gold: #c9a96a;
+  --brand-brown: #4a3b2e;
+  --brand-deep: #2a2118;
+
+  /* Semantic tokens */
+  --background: var(--brand-ivory);
+  --surface: #fcf9f3; /* lifted ivory for inputs and panels */
+  --surface-muted: #f1e9da; /* sunken ivory for image wells */
+  --foreground: var(--brand-deep);
+  --foreground-muted: var(--brand-brown);
+  --foreground-subtle: #7a6a5a;
+  --accent: var(--brand-gold);
+  --accent-strong: #a8874a; /* gold dark enough for text on ivory */
+  --line: rgb(74 59 46 / 0.14);
+  --line-strong: rgb(74 59 46 / 0.32);
+  --line-gold: rgb(201 169 106 / 0.55);
+  --focus: #8a6a2e;
+  --success: #4f6b3a;
+  --warning: #8a5d14;
+  --danger: #9b3b2a;
+
+  --radius: 2px;
+  --header-height: 4.5rem;
 }
 
 @theme inline {
+  --color-ivory: var(--brand-ivory);
+  --color-gold: var(--brand-gold);
+  --color-brown: var(--brand-brown);
+  --color-deep: var(--brand-deep);
+
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--foreground-muted);
+  --color-subtle: var(--foreground-subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-gold: var(--line-gold);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+
+  --radius-sm: var(--radius);
+  --radius-md: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+
+  html[lang="ar"] body {
+    font-family: var(--font-arabic);
+    line-height: 1.8;
+  }
+
+  ::selection {
+    background: rgb(201 169 106 / 0.35);
+    color: var(--brand-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--brand-deep);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  hr {
+    border-color: var(--line);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Display headings: serif in English, light Plex Arabic in Arabic. */
+  .font-display {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+  }
+  :lang(ar) .font-display,
+  .font-display:lang(ar) {
+    font-family: var(--font-arabic);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.35;
+  }
+
+  /* Small tracked labels. Arabic script must never be letter-spaced. */
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+  }
+  :lang(ar) .eyebrow,
+  .eyebrow:lang(ar) {
+    font-size: 0.85rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .tracking-label {
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  :lang(ar) .tracking-label {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* Thin champagne hairline divider */
+  .hairline {
+    height: 1px;
+    width: 3.5rem;
+    background: var(--brand-gold);
+  }
+
+  .prose-brand {
+    color: var(--foreground-muted);
+    line-height: 1.85;
+    white-space: pre-line;
+  }
+
+  .link-underline {
+    text-decoration: underline;
+    text-decoration-color: var(--line-gold);
+    text-underline-offset: 0.3em;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color 0.2s ease;
+  }
+  .link-underline:hover {
+    text-decoration-color: var(--brand-deep);
+  }
+
+  /* Numbers and codes always render left-to-right, even in Arabic. */
+  .ltr-nums {
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+  }
 }
